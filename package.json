@@ -1,0 +1,24 @@
+{
+  "name": "mock-premier-league",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chiazokam/Mock-Premier-League.git"
+  },
+  "author": "zokky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chiazokam/Mock-Premier-League/issues"
+  },
+  "homepage": "https://github.com/Chiazokam/Mock-Premier-League#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
