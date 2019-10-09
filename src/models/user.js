@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -9,6 +10,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: false,
   },
+  role: {
+    type: String,
+    default: 'user',
+    enum: ['user', 'admin'],
+  },
 });
+
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
 const User = mongoose.model('User', userSchema);
 export default User;
