@@ -6,6 +6,8 @@ cache:
     - "node_modules"
 services:
     - mongodb
+before_script:
+  - sudo redis-server /etc/redis/redis.conf --port 6379
 script:
   - npm ci
   - npm test
