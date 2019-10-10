@@ -15,13 +15,5 @@ const teamSchema = new mongoose.Schema({
   },
 });
 
-teamSchema.pre('remove', (next) => {
-  this.model('Fixture').deleteMany({ home: this._id }, next);
-});
-
-teamSchema.pre('remove', (next) => {
-  this.model('Fixture').deleteMany({ away: this._id }, next);
-});
-
 const Team = mongoose.model('Team', teamSchema);
 export default Team;

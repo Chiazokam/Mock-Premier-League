@@ -1,10 +1,24 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
+import mongoose from 'mongoose';
 import app from '../../app';
 import baseUrl from './utils/baseUrl';
 import mock from './utils/mock';
 
 chai.use(chaiHttp);
+
+before((done) => {
+  const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+  };
+  mongoose.connect('mongodb://localhost/db-test', options, () => {
+    mongoose.connection.db.dropDatabase(() => {
+      done();
+    });
+  });
+});
 
 describe('User Sign Up', () => {
   it('should successfully sign up a user', async () => {
