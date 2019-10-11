@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "nyc mocha --exit --require @babel/register --timeout 600000 ./src/__tests__/*.spec.js",
+    "test": "node_modules/.bin/jest --runInBand --forceExit",
+    "test:watch": "node_modules/.bin/jest --watchAll",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "start:dev": "nodemon --exec babel-node app.js",
     "lint": "eslint --fix app.js && eslint --fix src/"
@@ -36,13 +37,12 @@
     "@babel/node": "^7.6.1",
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.0",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
     "coveralls": "^3.0.6",
     "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "mocha": "^6.2.1",
-    "nyc": "^14.1.1"
+    "jest": "^24.9.0",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
   }
 }
