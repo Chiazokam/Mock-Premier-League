@@ -15,6 +15,9 @@
 - Redis for Web Caching
 - Mocha and Chai Library
 - Docker
+- Linting with ESLint
+- CI with Travis
+- Code Coverage Report with Coveralls
 
 ## Setting Up
 - [x] Setup mongodb on your local machine. Check out the guide for [MacOS](https://www.robinwieruch.de/mongodb-macos-setup) and [Windows](https://www.robinwieruch.de/mongodb-windows-setup)

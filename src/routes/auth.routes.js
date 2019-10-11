@@ -2,8 +2,6 @@
 import { Router } from 'express';
 import AuthControllers from '../controllers/auth.controllers';
 import AuthMiddlewares from '../middlewares/auth.middleware';
-// import redis from 'redis';
-// import client from '../redis';
 
 
 // const signup = (req, res) => {

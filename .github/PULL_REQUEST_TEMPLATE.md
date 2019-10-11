@@ -2,7 +2,7 @@
 
 #### Type of change
 
-#### How Can This Been Tested?
+#### How Can This Be Tested?
 - [x] clone this repo and cd into the folder
 - [x] Run `npm i` to install dependencies
 - [x] checkout to the branch `git checkout branchname`

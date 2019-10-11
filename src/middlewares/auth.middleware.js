@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import User from '../models/user';
 import { verifyToken } from '../utils/jwt.utils';
 import roles from '../utils/roles.utils';
@@ -60,14 +61,15 @@ class AuthMiddlewares {
     }
   }
 
-  static async grantAccess(action, resource) {
-    return async (req, res, next) => {
+  static grantAccess(action, resource) {
+    return function (req, res, next) {
       try {
         const { role } = req.user;
         const permission = roles.can(role)[action](resource);
         if (!permission.granted) {
           return res.status(401).json({
-            error: 'You do not have enough permission to perform this action',
+            status: 401,
+            message: 'You do not have enough permission to perform this action',
           });
         }
         return next();
