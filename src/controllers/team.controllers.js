@@ -4,7 +4,7 @@ import keys from '../utils/redisKeys.utils';
 
 const { teams } = keys;
 
-class TeamController { 
+class TeamController {
   /**
  * @description Create Team controller
  * @param {object} req
@@ -12,23 +12,16 @@ class TeamController {
  * @returns {object} res
  */
   static async createTeam(req, res) {
-    try {
-      const { name, stadiumName } = req.body;
+    const { name, stadiumName } = req.body;
 
-      const data = await new Team({ name, stadiumName });
-      await data.save();
-      client.del(teams);
-      return res.status(201).json({
-        status: 201,
-        data,
-        message: 'Successfully created a team',
-      });
-    } catch (error) {
-      return res.status(500).json({
-        status: 500,
-        message: error.message,
-      });
-    }
+    const data = await new Team({ name, stadiumName });
+    await data.save();
+    client.del(teams);
+    return res.status(201).json({
+      status: 201,
+      data,
+      message: 'Successfully created a team',
+    });
   }
 
   /**
@@ -71,32 +64,25 @@ class TeamController {
  * @returns {object} res
  */
   static async updateTeam(req, res) {
-    try {
-      const { name, stadiumName } = req.body;
-      const { id: _id } = req.params;
-      const data = await Team.findOneAndUpdate(
-        { _id },
-        { name, stadiumName },
-        { new: true },
-      );
-      if (!data) {
-        return res.status(404).json({
-          status: 404,
-          message: 'Team Not Found',
-        });
-      }
-      client.del(teams);
-      return res.status(200).json({
-        status: 200,
-        data,
-        message: 'Successfully updated the team',
-      });
-    } catch (error) {
-      return res.status(500).json({
-        status: 500,
-        message: error.message,
+    const { name, stadiumName } = req.body;
+    const { id: _id } = req.params;
+    const data = await Team.findOneAndUpdate(
+      { _id },
+      { name, stadiumName },
+      { new: true },
+    );
+    if (!data) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Team Not Found',
       });
     }
+    client.del(teams);
+    return res.status(200).json({
+      status: 200,
+      data,
+      message: 'Successfully updated the team',
+    });
   }
 
   /**
@@ -106,26 +92,20 @@ class TeamController {
  * @returns {object} res
  */
   static async deleteTeam(req, res) {
-    try {
-      const { id: _id } = req.params;
-      const data = await Team.findOneAndDelete({ _id });
-      if (!data) {
-        return res.status(404).json({
-          status: 404,
-          message: 'Team Not Found',
-        });
-      }
-      client.del(teams);
-      return res.status(200).json({
-        data,
-        message: 'Successfully deleted the team',
-      });
-    } catch (error) {
-      return res.status(500).json({
-        status: 500,
-        message: error.message,
+    const { id: _id } = req.params;
+    const data = await Team.findOneAndDelete({ _id });
+    if (!data) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Team Not Found',
       });
     }
+    client.del(teams);
+    return res.status(200).json({
+      status: 200,
+      data,
+      message: 'Successfully deleted the team',
+    });
   }
 }
 

@@ -1,0 +1,15 @@
+module.exports = {
+  clearMocks: true,
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{js,jsx,mjs}'],
+  coverageDirectory: 'coverage',
+  moduleFileExtensions: ['js'],
+  testEnvironment: 'node',
+  testMatch: ['**/__tests__/**/*.js?(x)', '**/?(*.)+(spec|test).js?(x)'],
+  testPathIgnorePatterns: ['\\\\node_modules\\\\',
+  ],
+  testURL: 'http://localhost',
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  verbose: true,
+  modulePathIgnorePatterns: ['src/app.js', 'src/__tests__/utils'],
+};

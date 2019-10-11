@@ -6,130 +6,127 @@ import mock from './utils/mock';
 
 let adminUser;
 let user;
-let teamId;
+let fixtureId;
 
 beforeAll(async () => {
   jest.setTimeout(10000);
-
   adminUser = await request(app)
     .post(`${baseUrl}/auth/signup`)
-    .send(mock.teamAdminDetails);
+    .send(mock.fixtureAdminDetails);
 
   user = await request(app)
     .post(`${baseUrl}/auth/signup`)
-    .send(mock.teamSignup);
+    .send(mock.fixtureSignup);
 });
 
-describe('Create Team', () => {
-  it('should successfully create a team', async () => {
+describe('Create Fixture', () => {
+  it('should successfully create a fixture', async () => {
     const res = await request(app)
-      .post(`${baseUrl}/teams`)
+      .post(`${baseUrl}/fixtures`)
       .set('authorization', `Bearer ${adminUser.body.token}`)
       .send({
-        ...mock.team,
+        ...mock.fixture,
       });
     expect(res.body.status).toEqual(201);
-    expect(res.body.message).toEqual('Successfully created a team');
-    expect(res.body.data.name).toEqual(mock.team.name);
-    teamId = res.body.data._id;
+    expect(res.body.message).toEqual('Successfully created a fixture');
+    expect(res.body.data.name).toEqual(mock.fixture.name);
+    fixtureId = res.body.data._id;
   });
 
-  it('should not create a team as a user', async () => {
+  it('should not create a fixture as a user', async () => {
     const res = await request(app)
-      .post(`${baseUrl}/teams`)
+      .post(`${baseUrl}/fixtures`)
       .set('authorization', `Bearer ${user.body.token}`)
       .send({
-        ...mock.team,
+        ...mock.fixture,
       });
     expect(res.body.status).toEqual(401);
     expect(res.body.message).toEqual('You do not have enough permission to perform this action');
   });
 });
 
-describe('View Teams', () => {
-  it('should successfully get all teams from the server', async () => {
+describe('View Fixtures', () => {
+  it('should successfully get all pending fixtures from the server', async () => {
     const res = await request(app)
-      .get(`${baseUrl}/teams`)
+      .get(`${baseUrl}/fixtures?status=pending`)
       .set('authorization', `Bearer ${adminUser.body.token}`);
     expect(res.body.status).toEqual(200);
     expect(res.body.source).toEqual('server');
   });
 
-  it('should successfully get all teams from the cache', async () => {
+  it('should successfully get all pending fixtures from the cache', async () => {
     const res = await request(app)
-      .get(`${baseUrl}/teams`)
+      .get(`${baseUrl}/fixtures?status=pending`)
       .set('authorization', `Bearer ${adminUser.body.token}`);
     expect(res.body.status).toEqual(200);
     expect(res.body.source).toEqual('cache');
   });
 });
 
-describe('Update Team', () => {
-  it('should successfully update a team', async () => {
+describe('Update Fixture', () => {
+  it('should successfully update a fixture', async () => {
     const res = await request(app)
-      .patch(`${baseUrl}/teams/${teamId}`)
+      .patch(`${baseUrl}/fixtures/${fixtureId}`)
       .set('authorization', `Bearer ${adminUser.body.token}`)
       .send({
-        name: 'New Horizon',
-        ...mock.team,
+        time: '01-01-2020',
+        ...mock.fixture,
       });
     expect(res.body.status).toEqual(200);
-    expect(res.body.message).toEqual('Successfully updated the team');
-    expect(res.body.data.name).toEqual(mock.team.name);
+    expect(res.body.message).toEqual('Successfully updated the fixture');
   });
 
-  it('should not update the team as a user', async () => {
+  it('should not update the fixture as a user', async () => {
     const res = await request(app)
-      .patch(`${baseUrl}/teams/${teamId}`)
+      .patch(`${baseUrl}/fixtures/${fixtureId}`)
       .set('authorization', `Bearer ${user.body.token}`)
       .send({
-        name: 'Old Lattire',
-        ...mock.team,
+        time: '30-01-2020',
+        ...mock.fixture,
       });
     expect(res.body.status).toEqual(401);
     expect(res.body.message).toEqual('You do not have enough permission to perform this action');
   });
 
-  it('should not find the team to be updated', async () => {
+  it('should not find the fixture to be updated', async () => {
     const res = await request(app)
-      .patch(`${baseUrl}/teams/5d9fb207683b9607c80feca6`)
+      .patch(`${baseUrl}/fixtures/5d9fb207683b9607c80feca6`)
       .set('authorization', `Bearer ${adminUser.body.token}`)
       .send({
-        name: 'Old Lattire',
-        ...mock.team,
+        time: '03-11-2019',
+        ...mock.fixture,
       });
     expect(res.body.status).toEqual(404);
-    expect(res.body.message).toEqual('Team Not Found');
+    expect(res.body.message).toEqual('Fixture Not Found');
   });
 });
 
-describe('Delete Team', () => {
-  it('should successfully delete a team', async () => {
+describe('Delete Fixture', () => {
+  it('should successfully delete a fixture', async () => {
     const res = await request(app)
-      .delete(`${baseUrl}/teams/${teamId}`)
+      .delete(`${baseUrl}/fixtures/${fixtureId}`)
       .set('authorization', `Bearer ${adminUser.body.token}`);
     expect(res.body.status).toEqual(200);
-    expect(res.body.message).toEqual('Successfully deleted the team');
-    expect(res.body.data.name).toEqual(mock.team.name);
+    expect(res.body.message).toEqual('Successfully deleted the fixture');
   });
 
-  it('should not delete the team as a user', async () => {
+  it('should not delete the fixture as a user', async () => {
     const res = await request(app)
-      .delete(`${baseUrl}/teams/${teamId}`)
+      .delete(`${baseUrl}/fixtures/${fixtureId}`)
       .set('authorization', `Bearer ${user.body.token}`);
     expect(res.body.status).toEqual(401);
     expect(res.body.message).toEqual('You do not have enough permission to perform this action');
   });
 
-  it('should not find the team to be deleted', async () => {
+  it('should not find the fixture to be deleted', async () => {
     const res = await request(app)
-      .delete(`${baseUrl}/teams/5d9fb207683b9607c80feca6`)
+      .delete(`${baseUrl}/fixtures/5d9fb207683b9607c80feca6`)
       .set('authorization', `Bearer ${adminUser.body.token}`)
       .send({
-        name: 'Old Lattire',
-        ...mock.team,
+        time: '29-11-2019',
+        ...mock.fixture,
       });
     expect(res.body.status).toEqual(404);
-    expect(res.body.message).toEqual('Team Not Found');
+    expect(res.body.message).toEqual('Fixture Not Found');
   });
 });

@@ -32,10 +32,12 @@ connectDb().then(async () => {
   createSeededTeams();
   CreateSeededFixtures();
 
-  app.listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Listening on port ${port}`);
-  });
+  if (!module.parent) {
+    app.listen(port, () => {
+      // eslint-disable-next-line no-console
+      console.log(`Listening on port ${port}`);
+    });
+  }
 });
 
 export default app;

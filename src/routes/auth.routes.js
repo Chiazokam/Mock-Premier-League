@@ -2,23 +2,14 @@
 import { Router } from 'express';
 import AuthControllers from '../controllers/auth.controllers';
 import AuthMiddlewares from '../middlewares/auth.middleware';
-
-
-// const signup = (req, res) => {
-//   client.set('verykey', 'random value', redis.print);
-//   client.get('verykey', (error, result) => {
-//     if (error) {
-//       console.log(error);
-//       throw error;
-//     }
-//     console.log(`GET result ->${result}`);
-//   });
-//   res.send(200, 'hi');
-// };
+import tryCatch from '../utils/tryCatch.utils';
 
 const route = new Router();
 
-route.post('/signup', AuthMiddlewares.doesUserExist, AuthControllers.signup);
-route.post('/signin', AuthControllers.signin);
+const { signin, signup } = AuthControllers;
+const { doesUserExist } = AuthMiddlewares;
+
+route.post('/signup', doesUserExist, tryCatch(signup));
+route.post('/signin', tryCatch(signin));
 
 export default route;
