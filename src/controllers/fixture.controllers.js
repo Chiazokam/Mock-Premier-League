@@ -24,6 +24,8 @@ class FixtureController {
     await data.save();
     client.del(fixtures);
     client.del(status);
+    client.del(home);
+    client.del(away);
     return res.status(201).json({
       status: 201,
       data,
@@ -97,6 +99,8 @@ class FixtureController {
     }
     client.del(fixtures);
     client.del(status);
+    client.del(home);
+    client.del(away);
     return res.status(200).json({
       status: 200,
       data,
@@ -121,6 +125,8 @@ class FixtureController {
     }
     client.del(fixtures);
     client.del(data.status);
+    client.del(data.home);
+    client.del(data.away);
     return res.status(200).json({
       status: 200,
       data,
