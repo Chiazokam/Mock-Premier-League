@@ -3,6 +3,10 @@ import app from '../../app';
 import baseUrl from './utils/baseUrl';
 import mock from './utils/mock';
 
+beforeAll(async () => {
+  jest.setTimeout(10000);
+});
+
 describe('User Sign Up', () => {
   it('should successfully sign up a user', async () => {
     const res = await request(app)

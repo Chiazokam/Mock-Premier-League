@@ -11,5 +11,5 @@ module.exports = {
   testURL: 'http://localhost',
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   verbose: true,
-  modulePathIgnorePatterns: ['src/app.js', 'src/__tests__/utils'],
+  modulePathIgnorePatterns: ['src/app.js', 'src/__tests__/utils', 'src/redis.js'],
 };
