@@ -8,6 +8,9 @@
     "test:watch": "node_modules/.bin/jest --watchAll",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "start:dev": "nodemon --exec babel-node app.js",
+    "build": "babel app.js -d build && babel src -d build/src",
+    "start": "node build/app.js",
+    "heroku-postbuild": "npm run build",
     "lint": "eslint --fix app.js && eslint --fix src/"
   },
   "repository": {
@@ -21,6 +24,7 @@
   },
   "homepage": "https://github.com/Chiazokam/Mock-Premier-League#readme",
   "dependencies": {
+    "@babel/cli": "^7.6.4",
     "@babel/runtime": "^7.6.3",
     "accesscontrol": "^2.2.1",
     "bcrypt": "^3.0.6",
@@ -31,7 +35,8 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.1",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",

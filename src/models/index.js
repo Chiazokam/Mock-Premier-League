@@ -9,7 +9,7 @@ const options = {
   useCreateIndex: true,
   useFindAndModify: false,
 };
-const connectDb = () => mongoose.connect(process.env.DATABASE_URL, options);
+const connectDb = () => mongoose.connect(process.env.MONGODB_URI, options);
 const models = { User, Team, Fixture };
 
 export { connectDb };
