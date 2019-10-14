@@ -7,6 +7,7 @@ const createSeededFixtures = async () => {
     home: 'Dark Phoenix',
     away: 'Brave Monkeys',
     location: 'New Carod Stadium',
+    slug: 'Dark Phoenix-Brave Monkeys-24e58',
   });
   await fixture1.save();
 };
