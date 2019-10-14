@@ -1,4 +1,5 @@
 /* eslint-disable func-names */
+import uuid from 'uuid';
 import Fixture from '../models/fixture';
 import client from '../redis';
 import keys from '../utils/redisKeys.utils';
@@ -18,14 +19,18 @@ class FixtureController {
     } = req.body;
 
     const date = new Date(time).toISOString();
+    const idSubstring = uuid.v4().substring(0, 5);
+    const slug = `${home}-${away}-${idSubstring}`;
     const data = await new Fixture({
-      time: date, home, away, location, status,
+      time: date, home, away, location, status, slug,
     });
     await data.save();
     client.del(fixtures);
     client.del(status);
     client.del(home);
     client.del(away);
+    client.del(slug);
+
     return res.status(201).json({
       status: 201,
       data,
@@ -74,6 +79,40 @@ class FixtureController {
   }
 
   /**
+ * @description Get Fixture By Unique Slug
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} res
+ */
+  static async getFixture(req, res) {
+    const { slug } = req.params;
+    client.get(slug, async (error, result) => {
+      if (result) {
+        return res.status(200).json({
+          source: 'cache',
+          status: 200,
+          message: 'Successfully retrieved fixture',
+          data: JSON.parse(result),
+        });
+      }
+      const data = await Fixture.find({ slug });
+      client.setex(slug, 3600, JSON.stringify(data));
+      if (data.length === 0) {
+        return res.status(404).json({
+          status: 404,
+          message: 'Fixture may have been deleted or does not exist',
+        });
+      }
+      return res.status(200).json({
+        source: 'server',
+        status: 200,
+        message: 'Successfully retrieved fixture',
+        data,
+      });
+    });
+  }
+
+  /**
  * @description Update Fixture
  * @param {object} req
  * @param {object} res
@@ -84,10 +123,12 @@ class FixtureController {
       time, home, away, location, status,
     } = req.body;
     const { id: _id } = req.params;
+    const idSubstring = uuid.v4().substring(0, 5);
+    const slug = `${home}-${away}-${idSubstring}`;
     const data = await Fixture.findOneAndUpdate(
       { _id },
       {
-        time, home, away, location, status,
+        time, home, away, location, status, slug,
       },
       { new: true },
     );
@@ -101,6 +142,7 @@ class FixtureController {
     client.del(status);
     client.del(home);
     client.del(away);
+    client.del(slug);
     return res.status(200).json({
       status: 200,
       data,
@@ -127,6 +169,7 @@ class FixtureController {
     client.del(data.status);
     client.del(data.home);
     client.del(data.away);
+    client.del(data.slug);
     return res.status(200).json({
       status: 200,
       data,

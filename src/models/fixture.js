@@ -22,6 +22,10 @@ const fixtureSchema = new mongoose.Schema({
     default: 'pending',
     enum: ['pending', 'completed'],
   },
+  slug: {
+    type: String,
+    required: true,
+  },
 });
 
 const Fixture = mongoose.model('Fixture', fixtureSchema);
